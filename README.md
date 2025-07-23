@@ -84,14 +84,14 @@ POST /api/v1/ocr
 1. **Multipart Form Upload**
    ```bash
    curl -X POST -F "image=@image.jpg" -F "language=zh-CN" \
-        http://localhost:8080/api/v1/ocr
+        http://localhost:7321/api/v1/ocr
    ```
 
 2. **Binary Upload**
    ```bash
    curl -X POST -H "Content-Type: application/octet-stream" \
         --data-binary "@image.jpg" \
-        "http://localhost:8080/api/v1/ocr?language=zh-CN"
+        "http://localhost:7321/api/v1/ocr?language=zh-CN"
    ```
 
 3. **JSON Upload**
@@ -103,7 +103,7 @@ POST /api/v1/ocr
               "recognitionLevel": "accurate",
               "confidence": 0.8
             }' \
-        http://localhost:8080/api/v1/ocr
+        http://localhost:7321/api/v1/ocr
    ```
 
 **参数说明：**
