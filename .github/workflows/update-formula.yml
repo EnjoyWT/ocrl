@@ -1,0 +1,38 @@
+name: Auto Update Homebrew Formula
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  update-formula:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set tarball url
+        id: tarball
+        run: |
+          echo "url=https://github.com/${{ github.repository }}/archive/refs/tags/${{ github.event.release.tag_name }}.tar.gz" >> $GITHUB_OUTPUT
+
+      - name: Download release tarball
+        run: |
+          wget "${{ steps.tarball.outputs.url }}" -O source.tar.gz
+
+      - name: Calculate sha256
+        id: sha
+        run: |
+          SHA=$(shasum -a 256 source.tar.gz | awk '{print $1}')
+          echo "sha256=$SHA" >> $GITHUB_OUTPUT
+
+      - name: Update Formula url and sha256
+        run: |
+          sed -i "s|url \".*\"|url \"${{ steps.tarball.outputs.url }}\"|" Formula/ocrs.rb
+          sed -i "s|sha256 \".*\"|sha256 \"${{ steps.sha.outputs.sha256 }}\"|" Formula/ocrs.rb
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: update ocrs.rb for release ${{ github.event.release.tag_name }}"
+          branch: ${{ github.ref_name }} 
