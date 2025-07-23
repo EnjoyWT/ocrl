@@ -1,8 +1,8 @@
 class Ocrs < Formula
   desc "OCR HTTP service using macOS Vision Framework"
-  homepage "https://github.com/yourusername/ocr-service"
-  url "https://github.com/yourusername/ocr-service/archive/v1.0.0.tar.gz"
-  sha256 "your-sha256-hash-here"
+  homepage "https://github.com/EnjoyWT/ocrl"
+  url "https://github.com/EnjoyWT/ocrl/archive/refs/tags/v1.0.0.tar.gz"
+  sha256 "4d93e8fbe1995a78a7dcc059ffdc299ab8818c36a34c48291a001ccd63af0c70"
   license "MIT"
   
   depends_on :macos => :monterey
@@ -10,7 +10,7 @@ class Ocrs < Formula
   
   def install
     system "swift", "build", "-c", "release", "--disable-sandbox"
-    bin.install ".build/release/App" => "ocrs"
+    bin.install ".build/release/ocrs" => "ocrs"
     (etc/"ocrs").mkpath
     (etc/"ocrs/config.json").write <<~EOS
       {

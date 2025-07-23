@@ -27,31 +27,37 @@ cd ocrl
 ```
 
 ### 2. 安装服务
-```bash
-chmod +x scripts/install.sh
-./scripts/install.sh
-```
 
-### 3. 启动服务
+**推荐方式：Homebrew 安装**
 ```bash
+brew install --build-from-source Formula/ocrs.rb
 brew services start ocrs
 ```
 
-### 4. 测试服务
+**或 脚本安装（仅限本地开发/调试）**
+```bash
+chmod +x scripts/install.sh
+./scripts/install.sh
+ocr-service-start
+```
+
+> 两种安装方式任选其一，无需同时执行。
+
+### 3. 测试服务
 ```bash
 # 健康检查
-curl http://localhost:8080/health
+curl http://localhost:7321/health
 
 # 服务信息
-curl http://localhost:8080/api/v1/ocr/info
+curl http://localhost:7321/api/v1/ocr/info
 
 # OCR 识别 (multipart 上传)
-curl -X POST -F "image=@test.jpg" http://localhost:8080/api/v1/ocr
+curl -X POST -F "image=@test.jpg" http://localhost:7321/api/v1/ocr
 
 # OCR 识别 (二进制上传)
 curl -X POST -H "Content-Type: application/octet-stream" \
      --data-binary "@test.jpg" \
-     "http://localhost:8080/api/v1/ocr?language=zh-CN"
+     "http://localhost:7321/api/v1/ocr?language=zh-CN"
 ```
 
 ## API 文档
