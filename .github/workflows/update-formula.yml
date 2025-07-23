@@ -7,6 +7,8 @@ on:
 jobs:
   update-formula:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -35,4 +37,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: update ocrs.rb for release ${{ github.event.release.tag_name }}"
-          branch: ${{ github.ref_name }} 
+          branch: main 
