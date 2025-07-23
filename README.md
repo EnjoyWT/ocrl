@@ -38,7 +38,7 @@ brew services start ocrs
 ```bash
 chmod +x scripts/install.sh
 ./scripts/install.sh
-ocr-service-start
+ocrs-start
 ```
 
 > 两种安装方式任选其一，无需同时执行。
@@ -107,12 +107,13 @@ POST /api/v1/ocr
    ```
 
 **参数说明：**
-| 参数             | 类型     | 说明                                   | 是否必需 |
-|------------------|----------|----------------------------------------|----------|
-| image            | 文件/字符串 | 图片文件（multipart/binary）或 base64 字符串（json） | 必需     |
-| language         | 字符串   | 识别语言，如 zh-CN, en-US              | 可选     |
-| recognitionLevel | 字符串   | 识别精度（仅 JSON），如 accurate/fast   | 可选     |
-| confidence       | 浮点数   | 置信度阈值（仅 JSON），如 0.8           | 可选     |
+
+| 参数             | 类型         | 说明                                   | 是否必需 |
+|------------------|--------------|----------------------------------------|----------|
+| image            | 文件/字符串  | 图片文件（multipart/binary）或 base64 字符串（json） | 必需     |
+| language         | 字符串       | 识别语言，如 zh-CN, en-US              | 可选     |
+| recognitionLevel | 字符串       | 识别精度（仅 JSON），如 accurate/fast   | 可选     |
+| confidence       | 浮点数       | 置信度阈值（仅 JSON），如 0.8           | 可选     |
 
 **响应格式：**
 ```json
@@ -146,19 +147,18 @@ POST /api/v1/ocr
 
 ## 服务管理
 
-### 启动服务
+### Homebrew 方式
 ```bash
 brew services start ocrs
-```
-
-### 停止服务
-```bash
 brew services stop ocrs
+brew services list | grep ocrs
 ```
 
-### 检查状态
+### 脚本方式
 ```bash
-brew services list | grep ocrs
+ocrs-start   # 启动服务
+ocrs-stop    # 停止服务
+ocrs-status  # 检查状态
 ```
 
 ### 查看日志
@@ -187,52 +187,30 @@ swift build
 swift run App
 ```
 
-### 测试
-```bash
-# 运行测试脚本
-chmod +x scripts/test.sh
-./scripts/test.sh
-```
-
 ### 项目结构
-```
-ocr-service/
+```text
+ocrl/
 ├── Package.swift              # Swift Package 配置
 ├── Sources/App/
-│   ├── main.swift            # 应用入口
-│   ├── configure.swift       # 应用配置
+│   ├── main.swift             # 应用入口
+│   ├── configure.swift        # 应用配置
 │   ├── Controllers/
 │   │   └── OCRController.swift   # OCR API 控制器
 │   ├── Models/
-│   │   └── OCRModels.swift       # 数据模型
+│   │   └── OCRModels.swift        # 数据模型
 │   └── Services/
 │       └── VisionOCRService.swift # Vision OCR 服务
 ├── scripts/
-│   ├── install.sh            # 安装脚本
-│   └── test.sh              # 测试脚本
+│   └── install.sh            # 安装脚本
 └── Formula/
-    └── ocr-service.rb       # Homebrew Formula
+    └── ocrs.rb               # Homebrew Formula
 ```
-
-## 性能优化建议
-
-1. **图片预处理**
-   - 建议上传前压缩大图片
-   - 支持的最大文件大小：10MB
-
-2. **并发处理**
-   - 服务支持异步处理
-   - Vision Framework 会自动利用多核心
-
-3. **缓存策略**
-   - 可以考虑添加结果缓存
-   - 重复图片识别会更快
 
 ## Homebrew 集成
 
 ### Homebrew Formula 说明
 
-本项目自带 Homebrew Formula（`Formula/ocr-service.rb`），用于一键安装和注册系统服务。
+本项目自带 Homebrew Formula（`Formula/ocrs.rb`），用于一键安装和注册系统服务。
 
 - **服务名称**：`ocrs`（所有 brew 命令均用 ocrs）
 - **安装路径**：可执行文件安装为 `/usr/local/bin/ocrs`
@@ -275,44 +253,9 @@ brew services restart ocrs
   ```bash
   brew services stop ocrs
   brew uninstall ocrs
-  brew install --build-from-source Formula/ocr-service.rb
+  brew install --build-from-source Formula/ocrs.rb
   brew services start ocrs
   ```
-
-## 故障排除
-
-### 常见问题
-
-**1. 服务无法启动**
-```bash
-# 检查端口是否被占用
-lsof -i :76ers 321
-
-# 检查权限
-ls -la /usr/local/bin/ocr-service
-
-# 查看错误日志
-tail -f /usr/local/var/log/ocr-service.error.log
-```
-
-**2. OCR 识别失败**
-- 确保图片格式受支持
-- 检查图片是否包含文字
-- 尝试不同的语言参数
-
-**3. 权限问题**
-```bash
-# 重新安装并修复权限
-sudo ./scripts/install.sh
-```
-
-### 调试模式
-
-开发时可以设置环境变量启用调试：
-```bash
-export LOG_LEVEL=debug
-swift run App
-```
 
 ## 贡献
 
@@ -320,7 +263,7 @@ swift run App
 
 ### 开发规范
 1. 代码遵循 Swift 官方规范
-2. 提交前运行测试脚本
+2. 提交前运行测试
 3. 更新相关文档
 
 ## 许可证
