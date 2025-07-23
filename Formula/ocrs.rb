@@ -1,8 +1,8 @@
 class Ocrs < Formula
   desc "OCR HTTP service using macOS Vision Framework"
   homepage "https://github.com/EnjoyWT/ocrl"
-  url "https://github.com/EnjoyWT/ocrl/archive/refs/tags/v1.0.1.tar.gz"
-  sha256 "4d93e8fbe1995a78a7dcc059ffdc299ab8818c36a34c48291a001ccd63af0c70"
+  url "https://github.com/EnjoyWT/ocrl/archive/refs/tags/v1.0.2.tar.gz"
+  sha256 "f9ee6410f9a43a8ae713eab8f291de0fe5c2e6317426b563c6ec7be6e17b85a8"
   license "MIT"
   
   depends_on :macos => :monterey
