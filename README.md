@@ -1,6 +1,11 @@
+```
+ MAC 端作为主控（worker自动扩展）， iOS 设备作为api 集群版本. 代码整理中 待开源...
+```
+
 # OCR Service
 
 基于 macOS Vision Framework 的 HTTP OCR 服务，使用 Swift Vapor 框架构建。
+
 
 ## 特性
 
