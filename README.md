@@ -1,6 +1,7 @@
-```
- MAC 端作为主控（worker自动扩展）， iOS 设备作为api 集群版本. 代码整理中 待开源...
-```
+
+> **💡 集群版本**: 如需更高处理能力，可使用 [集群版](https://github.com/EnjoyWT/ocr-cluster)，支持 macOS 主控 + iOS 设备集群，设备自动发现和弹性扩展。
+
+
 
 # OCR Service
 
